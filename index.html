@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>補傳照片｜滴ㄟ de.a</title>
+<link rel="icon" href="https://static.wixstatic.com/media/97141e_b0db0bccd0ee4e89842823b8a96f3c1e~mv2.png">
+<style>
+  :root { --brand:#F29027; --brand-d:#d97812; --brand-l:#fff4e8; --ink:#2b2b2b; --muted:#6b7280; --line:#ece7df; --bg:#faf7f2; --ok:#15803d; --err:#c62828; }
+  * { box-sizing:border-box; }
+  html, body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif; -webkit-text-size-adjust:100%; }
+  .wrap { max-width:560px; margin:0 auto; padding:20px 16px 48px; }
+  header { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+  header img { width:44px; height:44px; border-radius:12px; object-fit:contain; background:#fff; border:1px solid var(--line); }
+  h1 { font-size:21px; margin:0; letter-spacing:.5px; }
+  .sub { color:var(--muted); font-size:13px; margin-top:2px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:16px; padding:18px 16px; margin-bottom:14px; }
+  .hidden { display:none !important; }
+  label.t { display:block; font-weight:700; font-size:15px; margin-bottom:8px; }
+  .hint { color:var(--muted); font-size:13px; line-height:1.6; }
+  input[type=text] { width:100%; font-size:16px; padding:12px 14px; border:1px solid #ddd5c8; border-radius:12px; background:#fff; color:var(--ink); }
+  input[type=text]:focus { outline:2px solid var(--brand); border-color:var(--brand); }
+  button { font:inherit; cursor:pointer; border:0; }
+  .btn { display:block; width:100%; padding:14px 16px; border-radius:12px; background:var(--brand); color:#fff; font-size:16px; font-weight:800; letter-spacing:.5px; }
+  .btn:active { background:var(--brand-d); }
+  .btn:disabled { background:#e5ded3; color:#9a9187; cursor:not-allowed; }
+  .btn.ghost { background:#fff; color:var(--brand-d); border:1.5px solid var(--brand); }
+  .row { display:flex; gap:8px; margin-top:10px; }
+  .row .btn { width:auto; flex:0 0 auto; padding:12px 18px; }
+  .choice { display:block; width:100%; text-align:left; padding:13px 14px; margin-top:8px; border-radius:12px; border:1.5px solid var(--line); background:#fff; font-size:15px; color:var(--ink); }
+  .choice:active { border-color:var(--brand); background:var(--brand-l); }
+  .order .p { font-size:18px; font-weight:800; }
+  .order .m { color:var(--muted); font-size:14px; margin-top:4px; word-break:break-all; }
+  .order .c { display:inline-block; margin-top:10px; font-size:13px; font-weight:700; color:var(--brand-d); background:var(--brand-l); padding:4px 10px; border-radius:999px; }
+  .drop { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; min-height:132px; border:2px dashed #e3c9a6; border-radius:14px; background:var(--brand-l); color:var(--brand-d); text-align:center; padding:18px; cursor:pointer; }
+  .drop.over { border-color:var(--brand); background:#ffe9d2; }
+  .drop .big { font-size:17px; font-weight:800; }
+  .drop .small { font-size:13px; color:#b0702a; }
+  .grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-top:14px; }
+  .tile { position:relative; aspect-ratio:1/1; border-radius:12px; overflow:hidden; background:#f1ece4; border:1px solid var(--line); }
+  .tile img { width:100%; height:100%; object-fit:cover; display:block; }
+  .tile .nm { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:6px; font-size:11px; color:var(--muted); text-align:center; word-break:break-all; }
+  .tile .st { position:absolute; left:0; right:0; bottom:0; padding:4px 6px; font-size:11px; font-weight:700; color:#fff; background:rgba(0,0,0,.45); text-align:center; }
+  .tile.ok .st { background:rgba(21,128,61,.85); }
+  .tile.err .st { background:rgba(198,40,40,.88); }
+  .tile.up .st { background:rgba(242,144,39,.92); }
+  .tile .x { position:absolute; top:4px; right:4px; width:26px; height:26px; border-radius:50%; background:rgba(0,0,0,.55); color:#fff; font-size:16px; line-height:26px; text-align:center; padding:0; }
+  .bar { height:8px; border-radius:99px; background:#efe6da; overflow:hidden; margin-top:14px; }
+  .bar i { display:block; height:100%; width:0; background:var(--brand); transition:width .3s; }
+  #msg { font-size:14px; line-height:1.6; margin:4px 2px 14px; min-height:1px; }
+  #msg.err { color:var(--err); font-weight:700; }
+  #msg.ok { color:var(--ok); font-weight:700; }
+  .done { text-align:center; padding:26px 16px; }
+  .done .big { font-size:20px; font-weight:800; color:var(--ok); }
+  .done p { color:var(--muted); font-size:14px; line-height:1.7; margin:10px 0 18px; }
+  footer { text-align:center; color:#a59d92; font-size:12px; margin-top:22px; line-height:1.7; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="https://static.wixstatic.com/media/97141e_14a38cf0838f46009b75f158a93affcd~mv2.png" alt="滴ㄟ">
+    <div><h1>補傳照片</h1><div class="sub">滴ㄟ de.a 客製化心意</div></div>
+  </header>
+
+  <div id="msg"></div>
+
+  <!-- 沒有專屬連結：客人自己輸入填表時的帳號 -->
+  <div id="boxFind" class="card hidden">
+    <label class="t" for="acc">填表時填的帳號</label>
+    <input type="text" id="acc" placeholder="蝦皮帳號或 LINE 名稱" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <div class="hint" style="margin-top:8px">輸入後按「找訂單」，大小寫不用管。</div>
+    <div class="row"><button class="btn" id="btnFind" type="button">找訂單</button></div>
+    <div id="choicesWrap" class="hidden" style="margin-top:14px">
+      <div class="hint">這個帳號有好幾張訂單，請選要補照片的那一張：</div>
+      <div id="choices"></div>
+    </div>
+  </div>
+
+  <!-- 訂單 -->
+  <div id="boxOrder" class="card order hidden">
+    <div class="p" id="oProduct"></div>
+    <div class="m" id="oMeta"></div>
+    <div class="c" id="oCount"></div>
+  </div>
+
+  <!-- 選照片、上傳 -->
+  <div id="boxPick" class="card hidden">
+    <label class="drop" id="drop" for="file">
+      <span class="big">點這裡選照片</span>
+      <span class="small">可以一次選很多張，電腦也能直接拖進來</span>
+    </label>
+    <input type="file" id="file" accept="image/*" multiple hidden>
+    <div class="grid" id="grid"></div>
+    <div class="bar hidden" id="bar"><i id="barIn"></i></div>
+    <div style="margin-top:14px"><button class="btn" id="btnUp" type="button" disabled>上傳照片</button></div>
+    <div class="hint" style="margin-top:10px">上傳後會直接放進您的訂單，設計師會再確認。上傳時請不要關閉這個頁面。</div>
+  </div>
+
+  <!-- 完成 -->
+  <div id="boxDone" class="card done hidden">
+    <div class="big" id="doneTitle">已收到照片，謝謝您</div>
+    <p>設計師會再確認照片，有需要會在聊天室跟您聯繫。<br>要說明哪張照片怎麼用，直接在聊天室告訴我們。</p>
+    <button class="btn ghost" id="btnMore" type="button">再傳其他照片</button>
+  </div>
+
+  <footer>照片只會用在您的訂單製作。</footer>
+</div>
+
+<script>
+/* 2026-11-02 補傳照片頁（GitHub 獨立的 upload repo 的 index.html）：網址帶 ?o=代碼（訂單系統「補圖連結」產生）就直接是那張單；沒帶就請客人輸入填表時的帳號。
+   照片一張一張送到報價系統（UploadLink.gs），跟訂單系統「+ 上傳」同一條路放進訂單的圖片。 */
+var GAS = 'https://script.google.com/macros/s/AKfycby9AZR8omDhr08pY_HVevTKCxJNSo4nY-SIND5zjibmS_3oLZgsRKIgKs9u3X0AXymbXg/exec';
+var MAX_BYTES = 15 * 1024 * 1024, MAX_FILES = 20;
+var order = null, items = [], busy = false;
+function $(id) { return document.getElementById(id); }
+function show(id, on) { $(id).classList.toggle('hidden', !on); }
+function setMsg(text, kind) { var m = $('msg'); m.textContent = text || ''; m.className = kind || ''; }
+
+function api(body) {
+  var ctl = ('AbortController' in window) ? new AbortController() : null;
+  var timer = ctl ? setTimeout(function () { ctl.abort(); }, 120000) : null;
+  return fetch(GAS, { method: 'POST', body: JSON.stringify(body), headers: { 'Content-Type': 'text/plain;charset=utf-8' }, signal: ctl ? ctl.signal : undefined, redirect: 'follow' })
+    .then(function (r) { return r.json(); })
+    .finally(function () { if (timer) clearTimeout(timer); });
+}
+
+function init() {
+  var o = new URLSearchParams(location.search).get('o');
+  if (!o) { show('boxFind', true); return; }
+  setMsg('讀取訂單中…');
+  api({ action: 'ul_info', o: o }).then(function (r) {
+    if (!r || !r.ok) { setMsg((r && r.error) || '這個連結無效，請跟小幫手要新的補傳連結', 'err'); show('boxFind', true); return; }
+    setMsg(''); r.o = o; setOrder(r);
+  }).catch(function () { setMsg('連不上系統，請稍後再重新整理一次', 'err'); });
+}
+
+function doFind() {
+  var acc = $('acc').value.trim();
+  if (acc.length < 3) { setMsg('請輸入完整的帳號', 'err'); return; }
+  $('btnFind').disabled = true; show('choicesWrap', false); setMsg('查詢中…');
+  api({ action: 'ul_find', acc: acc }).then(function (r) {
+    if (!r || !r.ok) { setMsg((r && r.error) || '查詢失敗，請再試一次', 'err'); return; }
+    if (!r.list.length) { setMsg('查不到這個帳號的訂單。請確認是填表時填的帳號，或直接在聊天室把照片傳給我們。', 'err'); return; }
+    setMsg('');
+    if (r.list.length === 1) { setOrder(r.list[0]); return; }
+    var box = $('choices'); box.innerHTML = '';
+    r.list.forEach(function (x) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'choice';
+      b.textContent = x.product + (x.date ? '（' + x.date + ' 填表）' : '');
+      b.onclick = function () { setOrder(x); };
+      box.appendChild(b);
+    });
+    show('choicesWrap', true);
+  }).catch(function () { setMsg('連不上系統，請稍後再試一次', 'err'); })
+    .finally(function () { $('btnFind').disabled = false; });
+}
+
+function setOrder(x) {
+  order = x; show('boxFind', false); show('boxDone', false);
+  $('oProduct').textContent = x.product || '訂單';
+  $('oMeta').textContent = [x.acc, x.date ? x.date + ' 填表' : ''].filter(Boolean).join('｜');
+  $('oCount').textContent = '目前已收到 ' + (x.count || 0) + ' 張照片';
+  show('boxOrder', true);
+  if (x.closed) { setMsg('這張訂單已經完成或取消，需要補圖請直接傳訊息給我們。', 'err'); show('boxPick', false); return; }
+  show('boxPick', true); renderItems();
+}
+
+function isImage(f) { return /^image\//.test(f.type) || /\.(heic|heif|jpe?g|png|webp|gif)$/i.test(f.name); }
+function guessMime(name) {
+  var e = String(name || '').split('.').pop().toLowerCase();
+  return { heic: 'image/heic', heif: 'image/heif', jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', gif: 'image/gif' }[e] || 'image/jpeg';
+}
+function addFiles(list) {
+  var skipped = 0, full = false;
+  Array.prototype.forEach.call(list, function (f) {
+    if (items.filter(function (i) { return i.state !== 'ok'; }).length >= MAX_FILES) { full = true; return; }
+    if (!isImage(f)) { skipped++; return; }
+    var canPreview = /^image\/(jpeg|png|webp|gif)$/.test(f.type);
+    items.push({ file: f, url: canPreview ? URL.createObjectURL(f) : '', state: 'wait', err: '' });
+  });
+  if (full) setMsg('一次最多 ' + MAX_FILES + ' 張，先傳這些，傳完可以再傳', 'err');
+  else if (skipped) setMsg(skipped + ' 個不是照片檔，已略過', 'err');
+  else setMsg('');
+  renderItems();
+}
+function removeItem(i) { if (busy) return; var it = items[i]; if (it && it.url) URL.revokeObjectURL(it.url); items.splice(i, 1); renderItems(); }
+
+function renderItems() {
+  var g = $('grid'); g.innerHTML = '';
+  items.forEach(function (it, i) {
+    var d = document.createElement('div'); d.className = 'tile ' + it.state;
+    if (it.url) { var im = document.createElement('img'); im.src = it.url; im.alt = ''; d.appendChild(im); }
+    else { var nm = document.createElement('div'); nm.className = 'nm'; nm.textContent = it.file.name; d.appendChild(nm); }
+    var st = { wait: '', up: '上傳中…', ok: '已上傳', err: (it.err && it.err.length <= 8) ? it.err : '沒傳成功' }[it.state];
+    if (it.state === 'err' && it.err) d.title = it.err;
+    if (st) { var s = document.createElement('div'); s.className = 'st'; s.textContent = st; d.appendChild(s); }
+    if (!busy && it.state !== 'ok' && it.state !== 'up') {
+      var x = document.createElement('button'); x.type = 'button'; x.className = 'x'; x.setAttribute('aria-label', '移除'); x.textContent = '×';
+      x.onclick = function () { removeItem(i); }; d.appendChild(x);
+    }
+    g.appendChild(d);
+  });
+  var left = items.filter(function (it) { return it.state === 'wait' || it.state === 'err'; }).length;
+  var hasErr = items.some(function (it) { return it.state === 'err'; });
+  var b = $('btnUp');
+  b.disabled = busy || !left;
+  b.textContent = busy ? '上傳中，請稍候…' : (left ? (hasErr ? '重新上傳 ' : '上傳 ') + left + ' 張照片' : '上傳照片');
+}
+
+function toB64(blob) {
+  return new Promise(function (res, rej) {
+    var r = new FileReader();
+    r.onload = function () { res(String(r.result).split(',')[1] || ''); };
+    r.onerror = function () { rej(new Error('讀不到這個檔案')); };
+    r.readAsDataURL(blob);
+  });
+}
+function shrink(f, maxSide, q) {
+  return new Promise(function (res, rej) {
+    var img = new Image(), src = URL.createObjectURL(f);
+    img.onload = function () {
+      var s = Math.min(1, maxSide / Math.max(img.width, img.height)), c = document.createElement('canvas');
+      c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(src);
+      c.toBlob(function (b) { b ? res(b) : rej(new Error('照片太大，請換一張')); }, 'image/jpeg', q);
+    };
+    img.onerror = function () { URL.revokeObjectURL(src); rej(new Error('照片太大，請換一張')); };
+    img.src = src;
+  });
+}
+function prep(f) {
+  var mime = f.type || guessMime(f.name), name = f.name || 'photo.jpg';
+  if (f.size <= MAX_BYTES) return toB64(f).then(function (d) { return { data: d, mime: mime, name: name }; });
+  if (!/^image\/(jpeg|png|webp)$/.test(mime)) return Promise.reject(new Error('超過 15MB'));
+  return shrink(f, 4000, 0.9).then(function (b) {
+    if (b.size > MAX_BYTES) throw new Error('超過 15MB');
+    return toB64(b).then(function (d) { return { data: d, mime: 'image/jpeg', name: name.replace(/\.\w+$/, '') + '.jpg' }; });
+  });
+}
+
+function doUpload() {
+  if (busy || !order) return;
+  var todo = items.filter(function (it) { return it.state === 'wait' || it.state === 'err'; });
+  if (!todo.length) return;
+  busy = true; setMsg(''); show('bar', true); $('barIn').style.width = '0';
+  var done = 0, fail = 0, stop = false, idx = 0;
+  renderItems();
+  function next() {
+    if (idx >= todo.length || stop) return finish();
+    var it = todo[idx++];
+    it.state = 'up'; it.err = ''; renderItems();
+    prep(it.file).then(function (p) {
+      return api({ action: 'ul_upload', o: order.o, name: p.name, mime: p.mime, data: p.data });
+    }).then(function (r) {
+      if (r && r.ok) { it.state = 'ok'; done++; if (r.count) order.count = r.count; }
+      else { it.state = 'err'; it.err = (r && r.error) || '沒傳成功'; fail++; if (/無效|完成或取消/.test(it.err)) stop = true; }
+    }).catch(function (e) {
+      it.state = 'err'; it.err = (e && e.name === 'AbortError') ? '連線逾時' : ((e && e.message) || '連線中斷'); fail++;
+    }).then(function () {
+      $('barIn').style.width = Math.round(idx / todo.length * 100) + '%';
+      $('oCount').textContent = '目前已收到 ' + (order.count || 0) + ' 張照片';
+      renderItems(); next();
+    });
+  }
+  function finish() {
+    busy = false; show('bar', false); renderItems();
+    if (stop) { setMsg(todo.filter(function (t) { return t.state === 'err'; })[0].err, 'err'); return; }
+    if (fail) { setMsg(fail + ' 張沒傳成功，請按「重新上傳」再試一次', 'err'); return; }
+    $('doneTitle').textContent = '已收到 ' + done + ' 張照片，謝謝您';
+    show('boxPick', false); show('boxDone', true);
+  }
+  next();
+}
+
+$('btnFind').addEventListener('click', doFind);
+$('acc').addEventListener('keydown', function (e) { if (e.key === 'Enter') doFind(); });
+$('file').addEventListener('change', function (e) { addFiles(e.target.files); e.target.value = ''; });
+$('btnUp').addEventListener('click', doUpload);
+$('btnMore').addEventListener('click', function () {
+  items = items.filter(function (it) { return it.state !== 'ok'; });
+  show('boxDone', false); show('boxPick', true); setMsg(''); renderItems();
+});
+var drop = $('drop');
+['dragenter', 'dragover'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add('over'); }); });
+['dragleave', 'drop'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove('over'); }); });
+drop.addEventListener('drop', function (e) { if (e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files); });
+window.addEventListener('beforeunload', function (e) { if (busy) { e.preventDefault(); e.returnValue = ''; } });
+init();
+</script>
+</body>
+</html>
