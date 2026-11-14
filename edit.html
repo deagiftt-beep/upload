@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>補填／修改資料｜滴ㄟ de.a</title>
+<link rel="icon" href="https://static.wixstatic.com/media/97141e_b0db0bccd0ee4e89842823b8a96f3c1e~mv2.png">
+<style>
+  :root { --brand:#F29027; --brand-d:#d97812; --brand-l:#fff4e8; --ink:#2b2b2b; --muted:#6b7280; --line:#ece7df; --bg:#faf7f2; --ok:#15803d; --err:#c62828; --ro:#f6f2ec; }
+  * { box-sizing:border-box; }
+  html, body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif; -webkit-text-size-adjust:100%; }
+  .wrap { max-width:560px; margin:0 auto; padding:20px 16px 120px; }
+  header { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+  header img { width:44px; height:44px; border-radius:12px; object-fit:contain; background:#fff; border:1px solid var(--line); }
+  h1 { font-size:21px; margin:0; letter-spacing:.5px; }
+  h2 { font-size:17px; margin:0 0 6px; }
+  .sub { color:var(--muted); font-size:13px; margin-top:2px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:16px; padding:18px 16px; margin-bottom:14px; }
+  .hidden { display:none !important; }
+  .hint { color:var(--muted); font-size:13px; line-height:1.7; }
+  button { font:inherit; cursor:pointer; border:0; }
+  .btn { display:block; width:100%; padding:14px 16px; border-radius:12px; background:var(--brand); color:#fff; font-size:16px; font-weight:800; letter-spacing:.5px; }
+  .btn:active { background:var(--brand-d); }
+  .btn:disabled { background:#e5ded3; color:#9a9187; cursor:not-allowed; }
+  .btn.ghost { background:#fff; color:var(--brand-d); border:1.5px solid var(--brand); }
+  .btn:focus-visible, input:focus-visible, textarea:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .order .p { font-size:18px; font-weight:800; }
+  .order .m { color:var(--muted); font-size:14px; margin-top:4px; word-break:break-all; }
+  .order .c { display:inline-block; margin-top:10px; font-size:13px; font-weight:700; color:var(--brand-d); background:var(--brand-l); padding:4px 10px; border-radius:999px; }
+  #msg { font-size:14px; line-height:1.6; margin:4px 2px 14px; min-height:1px; white-space:pre-line; }
+  #msg.err { color:var(--err); font-weight:700; }
+  .notice { background:var(--brand-l); border:1px solid #f3d9b8; color:#7a4a12; border-radius:12px; padding:12px 14px; font-size:14px; line-height:1.7; margin-bottom:14px; }
+  /* 欄位 */
+  .fld { padding:12px 0; }
+  .fld + .fld { border-top:1px solid var(--line); }
+  .ro + .fld { margin-top:4px; }
+  .fld + .ro { margin-top:4px; }
+  .sep { height:8px; margin:12px -16px; background:var(--bg); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .sep + .fld { padding-top:4px; }
+  .fld label { display:block; font-weight:700; font-size:15px; margin-bottom:8px; line-height:1.5; }
+  .fld input, .fld textarea { display:block; width:100%; font:inherit; font-size:16px; line-height:1.5; padding:12px 14px; border:1px solid #ddd5c8; border-radius:12px; background:#fff; color:var(--ink); }
+  .fld textarea { min-height:92px; resize:vertical; }
+  .fld input:focus, .fld textarea:focus { border-color:var(--brand); }
+  .fld.changed input, .fld.changed textarea { border-color:var(--brand); background:var(--brand-l); }
+  .fld .tip { font-size:12.5px; line-height:1.6; color:var(--muted); margin-top:6px; }
+  .fld label .tag { display:inline-block; margin-left:8px; padding:1px 8px; border-radius:999px; background:var(--brand-l); color:var(--brand-d); font-size:12px; font-weight:700; vertical-align:1px; }
+  .fld .tip.warn { color:var(--err); font-weight:700; }
+  .fld .undo { background:none; color:var(--brand-d); font-size:12.5px; font-weight:700; padding:6px 0 0; text-decoration:underline; }
+  .ro { display:flex; gap:10px; align-items:baseline; padding:10px 12px; margin:0 -4px; background:var(--ro); border-radius:10px; }
+  .ro + .ro { margin-top:6px; }
+  .ro .rl { flex:0 0 42%; font-size:13.5px; color:var(--muted); line-height:1.5; word-break:break-word; }
+  .ro .rv { flex:1 1 auto; min-width:0; font-size:14.5px; line-height:1.5; word-break:break-word; white-space:pre-line; }
+  .ro .rw { flex:0 0 auto; font-size:11.5px; color:#a08a6c; white-space:nowrap; }
+  /* 送出列 */
+  .bar { position:fixed; left:0; right:0; bottom:0; background:rgba(250,247,242,.96); border-top:1px solid var(--line); padding:12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); }
+  .bar .in { max-width:528px; margin:0 auto; }
+  .bar .cnt { font-size:13px; color:var(--muted); text-align:center; margin-bottom:8px; }
+  /* 確認 */
+  .chg { padding:12px 0; }
+  .chg + .chg { border-top:1px solid var(--line); }
+  .chg .cl { font-weight:700; font-size:14.5px; margin-bottom:6px; }
+  .chg .co { color:var(--muted); font-size:13.5px; line-height:1.6; word-break:break-word; white-space:pre-line; }
+  .chg .cn { font-size:15.5px; line-height:1.6; word-break:break-word; white-space:pre-line; }
+  .chg .cn b { color:var(--brand-d); }
+  .chg .cw { color:var(--err); font-size:13px; font-weight:700; margin-top:6px; line-height:1.6; }
+  .row2 { display:flex; gap:10px; margin-top:16px; }
+  .row2 .btn { flex:1 1 0; }
+  .done { text-align:center; padding:26px 16px; }
+  .done .big { font-size:20px; font-weight:800; color:var(--ok); }
+  .done p { color:var(--muted); font-size:14px; line-height:1.7; margin:10px 0 18px; }
+  footer { text-align:center; color:#a59d92; font-size:12px; margin-top:22px; line-height:1.7; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="https://static.wixstatic.com/media/97141e_14a38cf0838f46009b75f158a93affcd~mv2.png" alt="滴ㄟ">
+    <div><h1>補填／修改資料</h1><div class="sub">滴ㄟ de.a 客製化心意</div></div>
+  </header>
+
+  <div id="msg" role="status"></div>
+  <div id="boxRetry" class="hidden" style="margin-bottom:14px"><button class="btn ghost" id="btnRetry" type="button">重新整理</button></div>
+
+  <!-- 訂單 -->
+  <div id="boxOrder" class="card order hidden">
+    <div class="p" id="oProduct"></div>
+    <div class="m" id="oMeta"></div>
+    <div class="c" id="oDays"></div>
+  </div>
+
+  <div id="boxNote" class="notice hidden"></div>
+
+  <!-- 內容 -->
+  <div id="boxForm" class="card hidden">
+    <h2>您填寫的內容</h2>
+    <div class="hint" id="formHint"></div>
+    <form id="form" autocomplete="off" novalidate></form>
+  </div>
+
+  <!-- 確認 -->
+  <div id="boxReview" class="card hidden">
+    <h2>請確認修改的內容</h2>
+    <div class="hint">確認沒問題再按「確認送出」。</div>
+    <div id="chgList"></div>
+    <div class="row2"><button class="btn ghost" id="btnBack" type="button">回去修改</button><button class="btn" id="btnSend" type="button">確認送出</button></div>
+  </div>
+
+  <!-- 完成 -->
+  <div id="boxDone" class="card done hidden">
+    <div class="big" id="doneTitle">已送出，謝謝您</div>
+    <p id="doneText"></p>
+    <button class="btn ghost" id="btnAgain" type="button">回去看填寫的內容</button>
+  </div>
+
+  <footer>這一頁只有拿到連結的人打得開，請不要轉傳給別人。<br>資料只會用在您的訂單製作。</footer>
+</div>
+
+<div class="bar hidden" id="bar"><div class="in">
+  <div class="cnt" id="barCnt"></div>
+  <button class="btn" id="btnReview" type="button" disabled>送出修改</button>
+</div></div>
+
+<script>
+/* 2026-11-14 補填／修改資料頁（補圖頁同一個 upload repo 的 edit.html）：網址帶 ?o=代碼（訂單系統「補資料連結」或小幫手回覆裡的連結）。
+   打開先向報價系統拿這張單填寫的內容（FormEdit.gs 的 ul_edit_info），可以改的欄位由報價系統決定；送出走 ul_edit_save。
+   這一頁不存任何資料，也不能輸入帳號找訂單。 */
+var GAS = 'https://script.google.com/macros/s/AKfycby9AZR8omDhr08pY_HVevTKCxJNSo4nY-SIND5zjibmS_3oLZgsRKIgKs9u3X0AXymbXg/exec';
+var token = new URLSearchParams(location.search).get('o') || '';
+var info = null, busy = false, pendingChanges = [];
+function $(id) { return document.getElementById(id); }
+function show(id, on) { $(id).classList.toggle('hidden', !on); }
+function setMsg(text, kind) { var m = $('msg'); m.textContent = text || ''; m.className = kind || ''; }
+function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+function api(body) {
+  var ctl = ('AbortController' in window) ? new AbortController() : null;
+  var timer = ctl ? setTimeout(function () { ctl.abort(); }, 60000) : null;
+  return fetch(GAS, { method: 'POST', body: JSON.stringify(body), headers: { 'Content-Type': 'text/plain;charset=utf-8' }, signal: ctl ? ctl.signal : undefined, redirect: 'follow' })
+    .then(function (r) { return r.json(); })
+    .finally(function () { if (timer) clearTimeout(timer); });
+}
+function friendly(r, fallback) {
+  var e = (r && r.error) || fallback;
+  return e === '不認得的動作' ? '系統正在更新，請晚一點再試，或直接告訴小幫手要修改的內容。' : e;
+}
+function hideAll() { ['boxOrder', 'boxNote', 'boxForm', 'boxReview', 'boxDone', 'bar', 'boxRetry'].forEach(function (id) { show(id, false); }); }
+
+function load() {
+  hideAll(); info = null;
+  if (!token) { setMsg('這一頁要從小幫手給您的連結打開。', 'err'); return; }
+  setMsg('讀取中…');
+  api({ action: 'ul_edit_info', o: token }).then(function (r) {
+    if (!r || !r.ok) { setMsg(friendly(r, '這個連結無效，請跟小幫手要新的連結'), 'err'); return; }
+    setMsg(''); info = r; render();
+  }).catch(function () { setMsg('連不上系統，請稍後再試一次。', 'err'); show('boxRetry', true); });
+}
+
+function render() {
+  $('oProduct').textContent = info.product || '訂單';
+  $('oMeta').textContent = [info.acc, info.date ? info.date + ' 填表' : ''].filter(Boolean).join('｜');
+  $('oDays').textContent = info.days > 0 ? '連結還有 ' + info.days + ' 天有效' : '連結今天到期';
+  show('boxOrder', true);
+  var nPend = (info.fields || []).filter(function (f) { return f.p; }).length;
+  info.note = info.note || (nPend ? '您上次送出的 ' + nPend + ' 項修改，小幫手還在確認。下面標「確認中」的欄位顯示的是您送出的內容，還可以繼續修改。' : '');
+  $('boxNote').textContent = info.note; show('boxNote', !!info.note);
+  var form = $('form'); form.innerHTML = '';
+  var anyRo = false, anyEdit = false, prevG = null;
+  (info.fields || []).forEach(function (f, i) {
+    var gap = i > 0 && String(f.g || '') !== String(prevG || '');
+    prevG = f.g || '';
+    if (gap) form.appendChild(el('div', 'sep'));
+    if (f.e) { anyEdit = true; form.appendChild(editRow(f)); }
+    else { anyRo = true; form.appendChild(roRow(f)); }
+  });
+  var hint = [];
+  if (info.canEdit && anyEdit) hint.push('白色的欄位可以直接修改，改好按最下面的「送出修改」。');
+  if (info.canEdit && anyRo) hint.push('灰底的項目是選項或會影響金額的內容，要更換請直接告訴小幫手。');
+  if (!(info.fields || []).length) hint.push('目前沒有填寫的內容。');
+  $('formHint').textContent = hint.join('');
+  show('boxForm', true);
+  show('bar', !!(info.canEdit && anyEdit));
+  refresh();
+}
+
+function roRow(f) {
+  var d = el('div', 'ro');
+  d.appendChild(el('div', 'rl', f.l));
+  d.appendChild(el('div', 'rv', f.v || '（沒填）'));
+  if (info.canEdit && f.w) d.appendChild(el('span', 'rw', f.w));
+  return d;
+}
+function editRow(f) {
+  var d = el('div', 'fld'), id = 'f' + f.c;
+  var lb = el('label', '', f.l); lb.setAttribute('for', id); d.appendChild(lb);
+  if (f.p) lb.appendChild(el('span', 'tag', '確認中'));
+  var inp = f.big ? document.createElement('textarea') : document.createElement('input');
+  if (!f.big) inp.type = 'text';
+  inp.id = id; inp.name = id; inp.value = f.v || ''; inp.maxLength = info.maxLen || 300;
+  inp.setAttribute('autocomplete', 'off'); inp.setAttribute('autocorrect', 'off'); inp.setAttribute('spellcheck', 'false');
+  inp.dataset.c = f.c; inp.dataset.b = f.v || ''; inp.dataset.l = f.l; if (f.id) { inp.dataset.id = '1'; inp.setAttribute('autocapitalize', 'characters'); }
+  if (f.id) inp.placeholder = '例：A123456789';
+  else if (/生日/.test(f.l) && /民國/.test(f.l)) inp.placeholder = '例：85年3月12日';
+  else if (!f.v) inp.placeholder = '還沒填';
+  d.appendChild(inp);
+  if (f.id && f.v) d.appendChild(el('div', 'tip', '為了保護個資只顯示頭尾。要修改請整格重新輸入。'));
+  var warn = el('div', 'tip warn hidden'); d.appendChild(warn);
+  var undo = el('button', 'undo hidden', '改回原本的內容'); undo.type = 'button'; d.appendChild(undo);
+  undo.addEventListener('click', function () { inp.value = inp.dataset.b; onInput(); inp.focus(); });
+  function onInput() {
+    var ch = val(inp) !== inp.dataset.b;
+    d.classList.toggle('changed', ch); undo.classList.toggle('hidden', !ch);
+    var w = ch ? check(inp) : '';
+    warn.textContent = w.replace(/^!/, ''); warn.classList.toggle('hidden', !w);
+    refresh();
+  }
+  inp.addEventListener('input', onInput);
+  if (f.id) inp.addEventListener('focus', function () { if (inp.value === inp.dataset.b && inp.value) { try { inp.select(); } catch (e) {} } });
+  if (!f.big) inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') e.preventDefault(); });
+  return d;
+}
+function val(inp) {
+  var v = String(inp.value || '').replace(/\r\n?/g, '\n').trim();
+  return inp.dataset.id ? v.replace(/\s+/g, '').toUpperCase() : v;
+}
+/* 回 ''＝沒問題；'!…'＝一定要改；其他＝提醒（可以照樣送出） */
+function check(inp) {
+  var v = val(inp);
+  if (!inp.dataset.id || !v) return '';
+  if (v.indexOf('*') > -1) return '!要修改請整格重新輸入，不要留星號。';
+  return idOk(v) ? '' : '格式看起來不太對，請再確認一次（確定沒錯可以照樣送出）。';
+}
+function idOk(v) {
+  if (/^[A-Z]{2}\d{8}$/.test(v)) return true;                       // 舊式居留證
+  if (!/^[A-Z][1289]\d{8}$/.test(v)) return false;
+  var map = 'ABCDEFGHJKLMNPQRSTUVXYWZIO', n = map.indexOf(v.charAt(0)) + 10;
+  var sum = Math.floor(n / 10) + (n % 10) * 9;
+  for (var i = 1; i <= 8; i++) sum += Number(v.charAt(i)) * (9 - i);
+  return (sum + Number(v.charAt(9))) % 10 === 0;
+}
+function changes() {
+  var out = [];
+  Array.prototype.forEach.call($('form').querySelectorAll('[data-c]'), function (inp) {
+    var v = val(inp);
+    if (v !== inp.dataset.b) out.push({ c: Number(inp.dataset.c), v: v, b: inp.dataset.b, l: inp.dataset.l, w: check(inp) });
+  });
+  return out;
+}
+function refresh() {
+  var n = changes().length;
+  $('btnReview').disabled = busy || !n;
+  $('btnReview').textContent = n ? '送出修改（' + n + ' 項）' : '送出修改';
+  $('barCnt').textContent = n ? '' : '還沒有修改任何欄位';
+  show('barCnt', !n);
+}
+
+function review() {
+  var list = changes();
+  if (!list.length) return;
+  var block = list.filter(function (c) { return c.w.charAt(0) === '!'; })[0];
+  if (block) { setMsg('「' + block.l + '」' + block.w.slice(1), 'err'); var t = $('f' + block.c); if (t) t.focus(); window.scrollTo(0, 0); return; }
+  setMsg(''); pendingChanges = list;
+  var box = $('chgList'); box.innerHTML = '';
+  list.forEach(function (c) {
+    var d = el('div', 'chg');
+    d.appendChild(el('div', 'cl', c.l));
+    d.appendChild(el('div', 'co', '原本：' + (c.b || '（沒填）')));
+    var n = el('div', 'cn'); n.appendChild(document.createTextNode('改成：')); n.appendChild(el('b', '', c.v || '（清空）')); d.appendChild(n);
+    if (c.w) d.appendChild(el('div', 'cw', c.w));
+    box.appendChild(d);
+  });
+  show('boxForm', false); show('bar', false); show('boxNote', false); show('boxReview', true);
+  window.scrollTo(0, 0);
+}
+function backToForm() { show('boxReview', false); show('boxForm', true); show('bar', true); show('boxNote', !!(info && info.note)); setMsg(''); }
+
+function send() {
+  if (busy || !pendingChanges.length) return;
+  busy = true; $('btnSend').disabled = true; $('btnBack').disabled = true; $('btnSend').textContent = '送出中…'; setMsg('');
+  api({ action: 'ul_edit_save', o: token, changes: pendingChanges.map(function (c) { return { c: c.c, v: c.v, b: c.b }; }) }).then(function (r) {
+    if (r && r.ok) {
+      var back = r.n === 0;
+      $('doneTitle').textContent = back ? '已改回原本的內容' : '已送出，謝謝您';
+      $('doneText').textContent = back ? '這次沒有要修改的內容。'
+        : (r.applied ? '修改的 ' + r.n + ' 項已經更新到您的訂單。' : '我們收到 ' + r.n + ' 項修改，小幫手確認後就會更新到您的訂單，不用再另外傳訊息。');
+      pendingChanges = [];
+      show('boxReview', false); show('boxOrder', true); show('boxDone', true); window.scrollTo(0, 0);
+      return;
+    }
+    setMsg(friendly(r, '沒有送出成功，請再試一次'), 'err');
+    if (r && r.reload) { show('boxReview', false); show('boxRetry', true); pendingChanges = []; }
+    window.scrollTo(0, 0);
+  }).catch(function () {
+    setMsg('連不上系統，沒有送出成功。您填的內容還在，請再按一次「確認送出」。', 'err'); window.scrollTo(0, 0);
+  }).finally(function () {
+    busy = false; $('btnSend').disabled = false; $('btnBack').disabled = false; $('btnSend').textContent = '確認送出';
+  });
+}
+
+$('btnReview').addEventListener('click', review);
+$('btnBack').addEventListener('click', backToForm);
+$('btnSend').addEventListener('click', send);
+$('btnAgain').addEventListener('click', load);
+$('btnRetry').addEventListener('click', load);
+$('form').addEventListener('submit', function (e) { e.preventDefault(); });
+window.addEventListener('beforeunload', function (e) { if (busy || (info && $('boxDone').classList.contains('hidden') && changes().length)) { e.preventDefault(); e.returnValue = ''; } });
+load();
+</script>
+</body>
+</html>
